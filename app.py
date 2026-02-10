@@ -2,29 +2,32 @@ import streamlit as st
 import joblib
 import numpy as np
 
-# -------- PAGE CONFIG --------
-st.set_page_config(page_title="Employee AI Dashboard", layout="wide")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="Employee AI Dashboard",
+    layout="wide"
+)
 
-# -------- LOAD MODEL --------
+# ---------------- LOAD MODEL ----------------
 model = joblib.load("knn_model.pkl")
 scaler = joblib.load("knn_scaler.pkl")
 
-# -------- CUSTOM CSS --------
+# ---------------- CSS STYLE ----------------
 st.markdown("""
 <style>
 
+/* Background Gradient */
 .stApp {
-    background: linear-gradient(120deg,#1e3c72,#2a5298);
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color:white;
 }
 
 /* Card Style */
 .card {
-    background: rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.55);
     padding:25px;
-    border-radius:20px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0px 10px 25px rgba(0,0,0,0.3);
+    border-radius:18px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.6);
 }
 
 /* Title */
@@ -32,36 +35,49 @@ st.markdown("""
     font-size:42px;
     font-weight:800;
     text-align:center;
+    color:#00ffe7;
 }
 
-/* Button */
+/* Labels readable */
+label, span, div {
+    color:white !important;
+}
+
+/* Button Style */
 button[kind="primary"] {
-    background: linear-gradient(90deg,#ff7e5f,#feb47b);
+    background: linear-gradient(90deg,#ff512f,#dd2476);
+    color:white;
     border:none;
     border-radius:10px;
     font-size:18px;
 }
 
-st.markdown("""
-<style>
-
-.stApp {
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color: white;
-}
-
-.card {
-    background: rgba(0,0,0,0.55);
-    padding:25px;
-    border-radius:20px;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
+# ---------------- HEADER ----------------
+st.markdown('<div class="title">📊 Employee Performance AI</div>', unsafe_allow_html=True)
+st.write("KNN-powered classification dashboard")
 
+# ---------------- LAYOUT ----------------
+col1, col2 = st.columns([1,2])
 
-# -------- OUTPUT CARD --------
+# -------- INPUT PANEL --------
+with col1:
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+
+    st.subheader("Employee Inputs")
+
+    reports = st.slider("Reports Submitted",0,15,5)
+    closure = st.slider("Closure Rate %",0,100,60)
+    attendance = st.slider("Attendance %",0,100,85)
+    incentive = st.slider("Incentive Score",0,15000,3000)
+
+    predict = st.button("Analyze Performance")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# -------- OUTPUT PANEL --------
 with col2:
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.subheader("AI Evaluation")
@@ -82,13 +98,12 @@ with col2:
         colC.metric("Attendance",attendance)
         colD.metric("Incentive",incentive)
 
-        # Color-coded result
         if level == 1:
             st.error("🔴 Level 1 — Needs Improvement")
-            st.warning("Recommendation: Intensive training required")
+            st.warning("Recommendation: Intensive training")
         elif level == 2:
             st.warning("🟠 Level 2 — Developing")
-            st.info("Recommendation: Skill improvement program")
+            st.info("Recommendation: Skill improvement")
         elif level == 3:
             st.success("🟢 Level 3 — Strong Performer")
             st.success("Recommendation: Incentive eligible")
@@ -102,8 +117,6 @@ with col2:
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# -------- FOOTER --------
+# ---------------- FOOTER ----------------
 st.markdown("---")
 st.caption("Interactive HR Intelligence Dashboard")
-
-
