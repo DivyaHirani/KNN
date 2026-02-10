@@ -42,28 +42,54 @@ button[kind="primary"] {
     font-size:18px;
 }
 
+st.markdown("""
+<style>
+
+/* Better background gradient */
+.stApp {
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color: #ffffff;
+}
+
+/* Force label visibility */
+label, span, div {
+    color: #ffffff !important;
+}
+
+/* Stronger Glass Card */
+.card {
+    background: rgba(0,0,0,0.55);
+    padding:25px;
+    border-radius:20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.6);
+}
+
+/* Title */
+.title {
+    font-size:42px;
+    font-weight:800;
+    text-align:center;
+    color:#00ffe7;
+}
+
+/* Button Gradient */
+button[kind="primary"] {
+    background: linear-gradient(90deg,#ff512f,#dd2476);
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+}
+
+/* Slider text */
+.stSlider label {
+    color:white !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
-# -------- HEADER --------
-st.markdown('<div class="title">📊 Employee Performance AI</div>', unsafe_allow_html=True)
-st.write("Classify employee level & get training recommendations")
-
-# -------- LAYOUT --------
-col1, col2 = st.columns([1,2])
-
-# -------- INPUT CARD --------
-with col1:
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.subheader("Employee Inputs")
-
-    reports = st.slider("Reports Submitted",0,15,5)
-    closure = st.slider("Closure Rate %",0,100,60)
-    attendance = st.slider("Attendance %",0,100,85)
-    incentive = st.slider("Incentive Score",0,15000,3000)
-
-    predict = st.button("Analyze Performance")
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # -------- OUTPUT CARD --------
 with col2:
@@ -109,3 +135,4 @@ with col2:
 # -------- FOOTER --------
 st.markdown("---")
 st.caption("Interactive HR Intelligence Dashboard")
+
